@@ -11,13 +11,14 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import socket from "socket.io-client";
 
 import api from "../../services/api";
+import Loader from "../../components/Loader";
 import styles from "./styles";
 
 
 export default class Box extends Component {
   constructor() {
     super();
-    this.state = { box: {} };
+    this.state = { box: {}, loading: true };
 
     this.subscribeToNewFiles = (box) => {
       const io = socket("https://oministack-week.herokuapp.com");
@@ -37,6 +38,7 @@ export default class Box extends Component {
     this.openFile = async (file) => {
       try {
         const filePath = `${RNFS.DocumentDirectoryPath}/${file.title}`;
+        console.log(file.url);
         await RNFS.downloadFile({
           fromURL: file.url,
           toFile: filePath
@@ -68,10 +70,13 @@ export default class Box extends Component {
           name: fileName
         });
   
+        this.setState({ loading: true });
         try {
           await api.post(`boxes/${this.state.box._id}/files`, data);
         } catch (err) {
           console.log(err);
+        } finally {
+          this.setState({ loading: false });
         }
       });
     };
@@ -99,13 +104,14 @@ export default class Box extends Component {
 
     const response = await api.get(`boxes/${boxId}`);
 
-    this.setState({ box: response.data });
+    this.setState({ box: response.data, loading: false });
   }
 
   render() {
     const box = this.state.box;
     return (
       <View style={styles.container}>
+        <Loader loading={this.state.loading} text="Carregando..." />
         <Text style={styles.boxTitle}>{box.title}</Text>
 
         <FlatList
