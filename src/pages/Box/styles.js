@@ -1,8 +1,5 @@
-import { StyleSheet, Platform } from "react-native";
-import {
-  getBottomSpace,
-  getStatusBarHeight
-} from "react-native-iphone-x-helper";
+import { Platform, StyleSheet } from "react-native";
+import { getBottomSpace, getStatusBarHeight } from "react-native-iphone-x-helper";
 
 const styles = StyleSheet.create({
   container: {

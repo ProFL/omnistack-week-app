@@ -1,10 +1,14 @@
 module.exports = {
     "env": {
-        "browser": true,
         "es6": true,
-        "react-native/react-native": true
+        "browser": true,
+        "react-native/react-native": true,
+        "mocha": true
     },
-    "extends": "eslint:recommended",
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
@@ -36,6 +40,9 @@ module.exports = {
         "semi": [
             "error",
             "always"
+        ],
+        "react/prop-types": [
+            "warn"
         ]
     }
 };
